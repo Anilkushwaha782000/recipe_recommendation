@@ -42,14 +42,11 @@ function AuthPage() {
   return (
     <Container component="main" maxWidth="sm" sx={{ marginTop: 8, marginBottom: '8px' }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
-          {/* Left Section with Image */}
-
-          {/* Right Section with Form */}
           <Grid item xs={12} md={6}>
             <Box
               padding={4}
               sx={{
-                background: "linear-gradient(135deg, #655862 0%, #fad0c4 100%)",
+                background: "linear-gradient(135deg, #3e328f 0%, #fad0c4 100%)",
                 borderRadius: 3,
                 boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
               }}
@@ -71,7 +68,9 @@ function AuthPage() {
               <Tabs
                 value={activeTab}
                 onChange={handleTabChange}
-                indicatorColor="secondary"
+                TabIndicatorProps={{
+                  style: { backgroundColor: "white" },
+                }}
                 textColor="inherit"
                 centered
                 sx={{

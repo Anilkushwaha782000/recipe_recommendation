@@ -31,20 +31,20 @@ function Navbar() {
               '&:hover': { color: 'secondary.main', background: 'transparent' },
             }}
           >
-                <motion.div
-      initial={{ scale: 1 }}
-      animate={{ scale: 1.2 }}
-      whileHover={{ scale: 1.3, rotate: 10 }}
-      transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 20,
-      }}
-    >
-      <Typography variant="h5" fontWeight="bold" gutterBottom>
-        🍽️
-      </Typography>
-    </motion.div>
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: 1.2 }}
+              whileHover={{ scale: 1.3, rotate: 10 }}
+              transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 20,
+              }}
+            >
+              <Typography variant="h5" fontWeight="bold" gutterBottom>
+                🍽️
+              </Typography>
+            </motion.div>
           </Button>
 
           {/* Hamburger Menu for Small Screens */}

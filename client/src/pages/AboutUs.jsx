@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import {
   Box,
   Container,
@@ -38,10 +39,14 @@ const AboutUsPage = () => {
       right: 0,
       bottom: 0,
       background: "rgba(255, 255, 255, 0.1)",
-      backdropFilter: "blur(10px)",
     },
   }}
 >
+<motion.div
+      initial={{ opacity: 0, y: 30 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.8, ease: "easeOut" }} 
+    >
   <Typography
     variant="h3"
     sx={{
@@ -53,6 +58,7 @@ const AboutUsPage = () => {
   >
     Explore the World of Recipes
   </Typography>
+  </motion.div>
 </Box>
 
 

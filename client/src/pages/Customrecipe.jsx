@@ -60,7 +60,7 @@ const CustomRecipeCreation = () => {
   };
 
   return (
-    <Box sx={{ py: 5, maxWidth: 1200, mx: 'auto' }}>
+    <Box sx={{ py: 5, maxWidth: 1200, mx: 'auto'}}>
       <Grid container spacing={4}>
         {/* Image Section */}
         <Grid item xs={12} md={5}>

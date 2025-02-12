@@ -5,6 +5,7 @@ import avocado from "../resources/images/av0cado.png";
 import carbonara from "../resources/images/carbonara.png";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { motion } from "framer-motion";
 import {
   Grid,
   Box,
@@ -90,77 +91,130 @@ function RecipeListingPage() {
   };
 
   return (
-    <Box sx={{ fontFamily: "Inter, sans-serif", backgroundColor: "#f9f9f9" }}>
-    <Box
-  sx={{
-    background: "linear-gradient(135deg, #ff6b6b, #6d1b7b)",
-    textAlign: "center",
-    py: 6,
-    borderRadius: "16px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-  }}
->
-  <Typography
-    variant="h4"
-    fontWeight="bold"
-    sx={{
-      color: "#fff",
-      textTransform: "uppercase",
-      letterSpacing: "1.5px",
-    }}
-  >
-    Featured Recipes
-  </Typography>
-  <Typography
-    variant="body1"
-    mt={2}
-    mb={4}
-    sx={{ color: "#f8f8f8", opacity: 0.9 }}
-  >
-    Handpicked recipes to inspire your next meal.
-  </Typography>
-  <Button
-    variant="contained"
-    sx={{
-      fontWeight: "bold",
-      borderRadius: "30px",
-      padding: "12px 24px",
-      background: "linear-gradient(45deg, #ff3d3d, #ff6b6b)",
-      boxShadow: "0 4px 10px rgba(255, 107, 107, 0.4)",
-      "&:hover": {
-        background: "linear-gradient(45deg, #ff1e1e, #ff5252)",
-      },
-    }}
-  >
-    Explore Featured Recipes
-  </Button>
-</Box>
+    <Box sx={{ fontFamily: "Inter, sans-serif", background: "radial-gradient(#994f8d, #dbd3d305)" }}>
+      <Box
+        sx={{
+          background: "linear-gradient(135deg, #ff6b6b, #6d1b7b)",
+          textAlign: "center",
+          py: 6,
+          borderRadius: "16px",
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+         <motion.div
+      initial={{ opacity: 0, y: 50 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 1 }} 
+    >
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        sx={{
+          color: "#fff",
+          textTransform: "uppercase",
+          letterSpacing: "1.5px",
+        }}
+      >
+        Featured Recipes
+      </Typography>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.3 }} // Slight delay for the subtitle
+      >
+        <Typography
+          variant="body1"
+          mt={2}
+          mb={4}
+          sx={{ color: "#f8f8f8", opacity: 0.9 }}
+        >
+          Handpicked recipes to inspire your next meal.
+        </Typography>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.5 }} // Button appears with a slight scale effect
+      >
+        <Button
+          variant="contained"
+          sx={{
+            fontWeight: "bold",
+            borderRadius: "30px",
+            padding: "12px 24px",
+            background: "linear-gradient(45deg, #ff3d3d, #ff6b6b)",
+            boxShadow: "0 4px 10px rgba(255, 107, 107, 0.4)",
+            "&:hover": {
+              background: "linear-gradient(45deg, #ff1e1e, #ff5252)",
+            },
+          }}
+        >
+          Explore Featured Recipes
+        </Button>
+      </motion.div>
+    </motion.div>
+      </Box>
 
 
       {/* Recipe Categories */}
-      <Box sx={{ backgroundColor: "#f9f9f9", py: 6 }}>
-        <Container>
-          <Typography variant="h4" fontWeight="bold" textAlign="center" sx={{ color: "#6d1b7b", textTransform: "uppercase" }}>
-            Recipe Categories
-          </Typography>
-          <Grid container spacing={4} mt={4}>
-            {["Breakfast", "Lunch", "Dinner", "Desserts", "Snacks"].map((category, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ boxShadow: "0 4px 12px rgba(0,0,0,0.1)", borderRadius: "8px", backgroundColor: "#fff" }}>
-                  <CardContent>
-                    <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ color: "#6d1b7b" }}>
-                      {category}
-                    </Typography>
-                    <Typography variant="body2" textAlign="center" mt={1} sx={{ color: "#555" }}>
-                      Discover recipes perfect for {category.toLowerCase()}!
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
+    <Box sx={{ py: 6 }}>
+      <Container>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          sx={{ color: "#6d1b7b", textTransform: "uppercase" }}
+        >
+          Recipe Categories
+        </Typography>
+        {/* Perspective added to Grid container */}
+        <Grid 
+          container 
+          spacing={4} 
+          mt={4} 
+          sx={{ perspective: "1000px" }} // Perspective effect
+        >
+          {["Breakfast", "Lunch", "Dinner", "Desserts", "Snacks"].map((category, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card
+                sx={{
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  borderRadius: "8px",
+                  backgroundColor: "#fff",
+                  transformStyle: "preserve-3d", // Ensures proper 3D effect
+                  transition: "transform 0.5s ease",
+                  "&:hover": {
+                    transform: "rotateY(15deg) scale(1.05)", // Rotate and scale on hover
+                    boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+                  },
+                }}
+              >
+                <CardContent>
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    textAlign="center"
+                    sx={{ color: "#6d1b7b" }}
+                  >
+                    {category}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    textAlign="center"
+                    mt={1}
+                    sx={{ color: "#555" }}
+                  >
+                    Discover recipes perfect for {category.toLowerCase()}!
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Box>
 
       {/* Recipe Listing */}
       <Container sx={{ mt: 6, mb: 4 }}>
@@ -220,7 +274,7 @@ function RecipeListingPage() {
           ))}
         </Grid>
 
-        <Stack spacing={2} sx={{ alignItems: "center", mt: 4 }}>
+        <Stack spacing={2} sx={{ alignItems: "center", mt: 4}}>
           <Pagination
             count={totalPages}
             color="secondary"
@@ -230,6 +284,8 @@ function RecipeListingPage() {
               borderRadius: "30px",
               padding: "10px 20px",
               boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              border: "1px solid white",
+              background: "aliceblue" 
             }}
           />
         </Stack>
