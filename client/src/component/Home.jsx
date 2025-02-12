@@ -12,9 +12,9 @@ import {
   Container,
 } from '@mui/material';
 import Navbar from './Navbar';
-
+import { motion } from "framer-motion";
 const HomePage = () => {
-  const mealData=[{
+  const mealData = [{
     title: 'AI-Powered Suggestions',
     description: 'Get recipe ideas tailored to your preferences and dietary needs.',
     img: 'https://cdn.pixabay.com/photo/2019/06/26/18/00/suggestion-4300902_1280.jpg',
@@ -27,6 +27,9 @@ const HomePage = () => {
     description: 'Track calories, macros, and more for a healthy lifestyle.',
     img: 'https://cdn.pixabay.com/photo/2023/09/25/07/55/salad-8274421_1280.jpg',
   }]
+  const MotionBox = motion(Box);
+  const MotionTypography = motion(Typography);
+  const MotionButton = motion(Button);
   return (
     <Box>
       {/* Hero Section */}
@@ -57,22 +60,47 @@ const HomePage = () => {
             background: 'rgba(0, 0, 0, 0.4)',
           }}
         />
-        <Box zIndex={1}>
-          <Typography variant="h2" fontWeight="bold" sx={{ textShadow: '2px 2px 10px rgba(0,0,0,0.5)' }}>
+        <MotionBox zIndex={1}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}  >
+          <MotionTypography variant="h2"
+            fontWeight="bold"
+            sx={{ textShadow: "2px 2px 10px rgba(0,0,0,0.5)" }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}>
             Discover Premium Recipes
-          </Typography>
-          <Typography variant="h6" sx={{ mt: 2, opacity: 0.9 }}>
+          </MotionTypography>
+          <MotionTypography variant="h6"
+            sx={{ mt: 2, opacity: 0.9 }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}>
             Elevate your cooking experience with curated recipes.
-          </Typography>
-          <Button
+          </MotionTypography>
+          <MotionButton
             variant="contained"
             component="a"
-            href='/recipes'
-            sx={{ mt: 3, backgroundColor: '#ff3366', padding: '12px 24px', fontSize: '16px', borderRadius: '25px', boxShadow: '0px 4px 12px rgba(255, 51, 102, 0.4)', '&:hover': { backgroundColor: '#cc0052' } }}
+            href="/recipes"
+            sx={{
+              mt: 3,
+              backgroundColor: "#ff3366",
+              padding: "12px 24px",
+              fontSize: "16px",
+              borderRadius: "25px",
+              boxShadow: "0px 4px 12px rgba(255, 51, 102, 0.4)",
+              "&:hover": { backgroundColor: "#cc0052" },
+            }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            whileHover={{ scale: 1.05 }} // Smooth hover effect
+            whileTap={{ scale: 0.95 }}
           >
             Explore Now
-          </Button>
-        </Box>
+          </MotionButton>
+        </MotionBox>
       </Box>
 
       {/* Features Section */}

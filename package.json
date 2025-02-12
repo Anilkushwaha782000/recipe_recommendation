@@ -1,0 +1,26 @@
+{
+  "name": "recipe_website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon backend/index.js",
+    "start": "node backend/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anilkushwaha782000/recipe_recommendation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Anilkushwaha782000/recipe_recommendation/issues"
+  },
+  "homepage": "https://github.com/Anilkushwaha782000/recipe_recommendation#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
