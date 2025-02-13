@@ -1,5 +1,16 @@
 import express from 'express'
+import dotenv from 'dotenv'
+dotenv.config()
 const app=express()
-app.listen(()=>{
-    console.log('server is running on port 3000!!');
+import connectionDatabase from './dbUtil/ConnectDb.js';
+import authRouter from './routes/auth.js';
+connectionDatabase();
+const PORT = process.env.PORT || 5000;
+app.use(express.json());
+app.use("/api/auth",authRouter)
+app.get("/hello",(req,res)=>{
+    res.status(200).json({message:"Hello, Anil from backend teams"})
+})
+app.listen(PORT,()=>{
+    console.log(`server is running on port ${PORT}!!`);
 })
