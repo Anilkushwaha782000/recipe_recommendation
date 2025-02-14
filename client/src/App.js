@@ -16,15 +16,15 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
         <Route index  element={<HomePage />} />
-        <Route path="/custom-recipe" element={<CustomRecipeCreation />} />
+        <Route path="/customrecipe" element={<CustomRecipeCreation />} />
         <Route path="/recipes" element={<RecipeListingPage />} />
         <Route path="/recipe/:id" element={<RecipeCard />} />
         <Route path="/login" element={<AuthPage />} />
         <Route path="/planner" element={<DietaryPlanner />} />
-        <Route path="/meal-summary" element={<MealSummary />} />
-        <Route path="/add-meal" element={<AddMealForm />} />
+        <Route path="/mealsummary" element={<MealSummary />} />
+        <Route path="/addmeal" element={<AddMealForm />} />
         <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/my-profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
   );

@@ -22,11 +22,12 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-
+import useAuthStore from "../store/userAuthStore";
 const ProfilePage = () => {
   const [tabValue, setTabValue] = useState(0);
   const [dietaryPreferences, setDietaryPreferences] = useState([]);
   const [cuisinePreferences, setCuisinePreferences] = useState([]);
+  const user=useAuthStore((state)=>state.user)
   const [savedRecipes, setSavedRecipes] = useState([
     { id: 1, title: "Spaghetti Carbonara", image: "https://via.placeholder.com/150" },
     { id: 2, title: "Chicken Curry", image: "https://via.placeholder.com/150" },
@@ -67,15 +68,19 @@ const ProfilePage = () => {
           </IconButton>
         </Box>
         <Box>
-          <Typography variant="h5" fontWeight="bold">
-            John Doe
+          {user && (
+            <>
+            <Typography variant="h5" fontWeight="bold">
+            {user.username}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            johndoe@example.com
+            {user.email}
           </Typography>
           <Typography variant="body2" color="textSecondary" mt={1}>
             Bio: Passionate about exploring cuisines and sharing recipes.
           </Typography>
+            </>
+          )}
         </Box>
         <Button
           startIcon={<EditIcon />}

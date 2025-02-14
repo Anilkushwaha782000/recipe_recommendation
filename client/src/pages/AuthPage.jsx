@@ -12,25 +12,49 @@ import {
   Link,
 } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import userAuthStore from "../store/userAuthStore";
 function AuthPage() {
+  const navigate=useNavigate();
   const [activeTab, setActiveTab] = useState(0);
-  const [userName, setUserName] = useState('');
+  const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const{login}=userAuthStore();
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (activeTab === 0)
-      console.log("Inside login submit>>" + activeTab);
+    if (activeTab === 0){
+      try {
+        const responsedata=await axios.post("http://localhost:5000/api/auth/login",{
+          password,email
+        },{withCredentials: true,
+          headers:{
+            'Content-Type': 'application/json',
+          }
+         })
+         const {user,token}=responsedata.data;
+      if(user&&token){
+        login(user,token);
+        navigate('/recipes');
+      }
+      } catch (error) {
+        console.log("Error during signup:" + error);
+      }
+    }
     else {
       try {
-        // const response=await axios.post("http://localhost:8089/api/signup",{
-        //   userName,password,email
-        // },{withCredentials: true })
-        // console.log(response.data);
+        const response=await axios.post("http://localhost:5000/api/auth/signup",{
+          username,password,email
+        },{withCredentials: true,
+          headers:{
+            'Content-Type': 'application/json',
+          }
+         })
+        console.log(response.data);
 
       } catch (error) {
         console.log("Error during signup:" + error);
@@ -40,7 +64,7 @@ function AuthPage() {
   };
 
   return (
-    <Container component="main" maxWidth="sm" sx={{ marginTop: 8, marginBottom: '8px' }}>
+    <Container component="main" maxWidth="sm" sx={{ marginTop: 2, marginBottom: '8px' }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
           <Grid item xs={12} md={6}>
             <Box
@@ -91,7 +115,7 @@ function AuthPage() {
                         variant="filled"
                         required
                         type="text"
-                        value={userName}
+                        value={username}
                         onChange={(e) => setUserName(e.target.value)}
                         sx={{
                           background: "#fff",

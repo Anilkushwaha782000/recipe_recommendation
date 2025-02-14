@@ -213,7 +213,7 @@ function DietaryPlanner() {
                         }
                       }}
                       component="a"
-                      href="/add-meal"
+                      href="/addmeal"
                     >
                       Add Meal
                     </Button>
