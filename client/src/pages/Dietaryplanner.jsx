@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import planner from '../resources/images/planner.png';
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { ToastContainer, toast,Slide } from 'react-toastify';
 import {
   Container,
   Box,
@@ -15,16 +17,25 @@ import {
   IconButton,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { Slide } from "@mui/material";
 import { Add, Edit, Delete } from "@mui/icons-material";
-
+import useRecipeStore from "../store/userStoreddata";
+import useAuthStore from "../store/userAuthStore";
 function DietaryPlanner() {
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [goalSaved, setGoalSaved] = useState(false);
+  const [goalSaved, setGoalSaved] = useState([]);
   const openMenu = Boolean(anchorEl);
+  const addGoal=useRecipeStore((state)=>state.addGoal);
+  const user=useAuthStore((state)=>state.user)
   const openSnackbar = goalSaved;
-
+  const [dailycalories,setDailycalories]=useState()
+  const [protine,setProtine]=useState()
+    const notify = (user,msg) => {
+      if(!user)return
+      if(user){
+        toast(msg, { transition: Slide, autoClose: 1000 });
+      }
+    };
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -33,9 +44,17 @@ function DietaryPlanner() {
     setAnchorEl(null);
   };
 
-  const handleSaveGoals = () => {
-    // Save goals logic here
-    setGoalSaved(true);
+  const handleSaveGoals = async(e) => {
+    e.preventDefault();
+    const updatedgoal = { protine,dailycalories, userId: user.id };
+    try {
+      await addGoal(updatedgoal)
+      setGoalSaved(true);
+      notify(user,"Goal has been saved Succesfully!!");
+    } catch (error) {
+      console.log("There is some error at client side:", error.message);
+      setGoalSaved(false);
+    }
   };
 
   const handleCloseSnackbar = () => {
@@ -44,7 +63,7 @@ function DietaryPlanner() {
 
   return (
     <Container maxWidth={false} sx={{ mt: 3, padding: 0 }}>
-      {/* Banner Section */}
+       <ToastContainer position="top-center"/>
       <Box
         sx={{
           position: "relative",
@@ -111,6 +130,8 @@ function DietaryPlanner() {
               fullWidth
               label="Daily Calories Goal"
               variant="outlined"
+              value={dailycalories}
+              onChange={(e)=>setDailycalories(e.target.value)}
               sx={{
                 mb: 3,
                 borderRadius: '10px',
@@ -128,6 +149,8 @@ function DietaryPlanner() {
               fullWidth
               label="Daily Protein Goal (g)"
               variant="outlined"
+              value={protine}
+              onChange={(e)=>setProtine(e.target.value)}
               sx={{
                 mb: 3,
                 borderRadius: '10px',
@@ -154,7 +177,7 @@ function DietaryPlanner() {
                   backgroundColor: theme.palette.primary.dark,
                 },
               }}
-              onClick={handleSaveGoals}
+              onClick={(e)=>handleSaveGoals(e)}
             >
               Save Goals
             </Button>
@@ -212,8 +235,8 @@ function DietaryPlanner() {
                           background: "#ffe0e0",
                         }
                       }}
-                      component="a"
-                      href="/addmeal"
+                      component={Link}
+                      to={`/addmeal?day=${day}`}
                     >
                       Add Meal
                     </Button>
@@ -260,19 +283,6 @@ function DietaryPlanner() {
         </Menu>
       </Box>
       {/* Snackbar Notification */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        TransitionComponent={Slide}
-        message="Goals Saved Successfully!"
-        sx={{ fontFamily: 'Poppins, sans-serif' }}
-      // action={
-      //   <IconButton size="small" color="inherit" onClick={handleCloseSnackbar}>
-      //     <Close fontSize="small" />
-      //   </IconButton>
-      // }
-      />
     </Container>
   );
 }

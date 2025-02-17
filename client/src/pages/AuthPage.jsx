@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userAuthStore from "../store/userAuthStore";
+import { ToastContainer, toast,Slide } from 'react-toastify';
 function AuthPage() {
   const navigate=useNavigate();
   const [activeTab, setActiveTab] = useState(0);
@@ -24,7 +25,12 @@ function AuthPage() {
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
-
+  const notify = (user,msg) => {
+    if(!user)return
+    if(user){
+      toast(msg, { transition: Slide, autoClose: 1000,onClose: () => navigate("/recipes"), });
+    }
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (activeTab === 0){
@@ -38,8 +44,8 @@ function AuthPage() {
          })
          const {user,token}=responsedata.data;
       if(user&&token){
+        notify(user,"User Logged In Successfully!!");
         login(user,token);
-        navigate('/recipes');
       }
       } catch (error) {
         console.log("Error during signup:" + error);
@@ -65,6 +71,7 @@ function AuthPage() {
 
   return (
     <Container component="main" maxWidth="sm" sx={{ marginTop: 2, marginBottom: '8px' }}>
+      <ToastContainer position="top-center"/> 
       <Paper elevation={3} sx={{ padding: 3 }}>
           <Grid item xs={12} md={6}>
             <Box

@@ -13,6 +13,7 @@ import Logout from '@mui/icons-material/Logout';
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import useAuthStore from '../store/userAuthStore';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 function Navbar() {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ function Navbar() {
   };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const navItems=['recipes', 'planner', 'customrecipe', 'about']
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -67,7 +69,8 @@ function Navbar() {
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
           <Button
-            href="/"
+            to="/"
+            component={Link}
             sx={{
               fontSize: '1.5rem',
               fontWeight: 'bold',
@@ -105,10 +108,11 @@ function Navbar() {
               gap: 3,
             }}
           >
-            {['recipes', 'planner', 'custom-recipe', 'about'].map((item) => (
+            {navItems.map((item) => (
               <Button
+               component={Link}
                 key={item}
-                href={`/${item}`}
+                to={`/${item}`}
                 sx={{
                   fontSize: '1rem',
                   fontWeight: '600',
@@ -120,7 +124,7 @@ function Navbar() {
               </Button>
             ))}
             {user ? (
-                      <Tooltip title="Account settings">
+                      <Tooltip title={user.email}>
                       <IconButton
                         onClick={handleClick}
                         size="small"
@@ -129,13 +133,14 @@ function Navbar() {
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                       >
-                        <Avatar sx={{ width: 32, height: 32 }}>{user.username.split(" ").map(name => name[0]).join("").toUpperCase()}</Avatar>
+                        <Avatar sx={{ width: 32, height: 32,bgcolor:"#9c27b0" }}>{user.username.split(" ").map(name => name[0]).join("").toUpperCase()}</Avatar>
                       </IconButton>
                     </Tooltip>
              
             ) : (
               <Button
-                href="/login"
+                to="/login"
+                component={Link}
                 sx={{
                   fontSize: '1rem',
                   fontWeight: '600',

@@ -12,15 +12,28 @@ import {
 } from "@mui/material";
 import { Fastfood, CalendarToday } from "@mui/icons-material";
 import addMeal from '../resources/images/addmeal.png';
-
+import useAuthStore from "../store/userAuthStore";
+import useRecipeStore from '../store/userStoreddata'
+import axios from "axios";
+import { ToastContainer, toast,Slide } from 'react-toastify';
+import { Link,useLocation } from "react-router-dom";
 function AddMealForm() {
+  const user=useAuthStore((state)=>state.user)
+  const addRecipe=useRecipeStore((state)=>state.addRecipe);
+  const location=useLocation();
+  const selectedDay = new URLSearchParams(location.search).get("day") || "";
   const [meal, setMeal] = useState({
-    day: "",
-    mealType: "",
-    mealName: "",
+    day: selectedDay,
+    mealtype: "",
+    mealname: "",
     calories: "",
   });
-
+    const notify = (user,msg) => {
+      if(!user)return
+      if(user){
+        toast(msg, { transition: Slide, autoClose: 1000 });
+      }
+    };
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   const mealTypes = ["Breakfast", "Lunch", "Dinner", "Snack"];
 
@@ -29,14 +42,22 @@ function AddMealForm() {
     setMeal((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    const updatedMeal = { ...meal, userId: user.id };
+    try {
+      addRecipe(updatedMeal);
+      notify(user,"Meal recipe saved successfully!!");
+    } catch (error) {
+      console.log("There is some error at client side:", error.message);
+    }
     console.log("Meal Added:", meal);
   };
 
   return (
     <>
     <Container maxWidth="md" sx={{ mt: 5 }}>
+      <ToastContainer position="top-center"/>
       <Grid container spacing={4}>
         {/* Image Section */}
         <Grid item xs={12} md={6}>
@@ -68,6 +89,7 @@ function AddMealForm() {
                     name="day"
                     value={meal.day}
                     onChange={handleChange}
+                    disabled
                     variant="outlined"
                     required
                     sx={{ backgroundColor: "#FFF", borderRadius: 1 }}
@@ -93,8 +115,8 @@ function AddMealForm() {
                     select
                     fullWidth
                     label="Meal Type"
-                    name="mealType"
-                    value={meal.mealType}
+                    name="mealtype"
+                    value={meal.mealtype}
                     onChange={handleChange}
                     variant="outlined"
                     required
@@ -120,8 +142,8 @@ function AddMealForm() {
                   <TextField
                     fullWidth
                     label="Meal Name"
-                    name="mealName"
-                    value={meal.mealName}
+                    name="mealname"
+                    value={meal.mealname}
                     onChange={handleChange}
                     variant="outlined"
                     placeholder="e.g., Grilled Chicken Salad"
@@ -184,8 +206,8 @@ function AddMealForm() {
         <Button
           variant="contained"
           color="secondary"
-          component="a"
-          href="/meal-summary"
+          component={Link}
+          to="/mealsummary"
           sx={{
             px: 4,
             textTransform: "none",

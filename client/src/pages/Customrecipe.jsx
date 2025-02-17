@@ -16,37 +16,35 @@ import {
 } from '@mui/material';
 import { FileUpload } from '@mui/icons-material';
 import customRecipeBanner from '../resources/images/custom.png';
-
+import useAuthStore from '../store/userAuthStore';
+import useRecipeStore from '../store/userStoreddata';
 const categories = ['Appetizer', 'Main Dish', 'Dessert', 'Snack', 'Beverage'];
-
+import { ToastContainer, toast,Slide } from 'react-toastify';
 const CustomRecipeCreation = () => {
+  const user=useAuthStore((state)=>state.user)
+
+  const addcustomMeal=useRecipeStore((state)=>state.addCustommeal)
   const [recipe, setRecipe] = useState({
-    name: '',
+    recipe_name: '',
     ingredients: '',
-    steps: '',
-    nutrition: {
-      calories: '',
-      protein: '',
-      carbs: '',
-      fat: '',
-    },
+    instructions: '',
+    calories: '',
+    protein: '',
+    carbs: '',
+    fat: '',
     category: '',
     image: null,
   });
-
+    const notify = (user,msg) => {
+      if(!user)return
+      if(user){
+        toast(msg, { transition: Slide, autoClose: 1000 });
+      }
+    };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setRecipe((prevRecipe) => ({ ...prevRecipe, [name]: value }));
   };
-
-  const handleNutritionChange = (e) => {
-    const { name, value } = e.target;
-    setRecipe((prevRecipe) => ({
-      ...prevRecipe,
-      nutrition: { ...prevRecipe.nutrition, [name]: value },
-    }));
-  };
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -56,11 +54,23 @@ const CustomRecipeCreation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const updatedMeal = {
+      ...recipe,
+      userId: user.id,
+    };
+    setRecipe(updatedMeal);
+    try {
+      addcustomMeal(updatedMeal);
+      notify(user,"Custom recipe saved Successfully!!");
+    } catch (error) {
+      console.log('There is some error while saving the data:', error.message);
+    }
     console.log('Recipe submitted:', recipe);
   };
 
   return (
     <Box sx={{ py: 5, maxWidth: 1200, mx: 'auto'}}>
+      <ToastContainer position="top-center"/> 
       <Grid container spacing={4}>
         {/* Image Section */}
         <Grid item xs={12} md={5}>
@@ -108,10 +118,10 @@ const CustomRecipeCreation = () => {
     <form onSubmit={handleSubmit}>
       <TextField
         label="Recipe Name"
-        name="name"
+        name="recipe_name"
         fullWidth
         variant="outlined"
-        value={recipe.name}
+        value={recipe.recipe_name}
         onChange={handleInputChange}
         sx={{
           mb: 3,
@@ -142,10 +152,10 @@ const CustomRecipeCreation = () => {
       />
       <TextField
         label="Preparation Steps"
-        name="steps"
+        name="instructions"
         fullWidth
         variant="outlined"
-        value={recipe.steps}
+        value={recipe.instructions}
         onChange={handleInputChange}
         multiline
         rows={6}
@@ -170,8 +180,8 @@ const CustomRecipeCreation = () => {
               name={field}
               fullWidth
               variant="outlined"
-              value={recipe.nutrition[field]}
-              onChange={handleNutritionChange}
+              value={recipe.field}
+              onChange={handleInputChange}
               sx={{
                 borderRadius: 2,
                 backgroundColor: '#fafafa',

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardMedia, CardContent, Typography, Box, Rating } from "@mui/material";
 
-function RecipeCard({ title, description, image, rating, prepTime }) {
+function RecipeCard({ strMeal, description, strMealThumb, rating, prepTime }) {
   return (
     <Card
       sx={{
@@ -19,8 +19,8 @@ function RecipeCard({ title, description, image, rating, prepTime }) {
       <CardMedia
         component="img"
         height="200"
-        image={image}
-        alt={`${title} image`}
+        image={strMealThumb}
+        alt={`${strMeal} image`}
         sx={{
           transform: "translateZ(20px)", // Pops the image forward slightly
           transition: "transform 0.3s ease-in-out",
@@ -33,7 +33,7 @@ function RecipeCard({ title, description, image, rating, prepTime }) {
           gutterBottom
           sx={{ transform: "translateZ(10px)", transition: "transform 0.3s ease-in-out" }}
         >
-          {title}
+          {strMeal}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {description}

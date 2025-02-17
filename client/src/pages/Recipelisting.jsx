@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FoodListening from "../resources/images/FoodListening.png";
 import chicken from "../resources/images/chicken.png";
 import avocado from "../resources/images/av0cado.png";
@@ -21,56 +21,14 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import RecipeCard from "./RecipeCard";
-
-const recipes = [
-  {
-    id: 1,
-    title: "Spaghetti Carbonara",
-    description: "A classic Italian pasta dish with creamy sauce.",
-    image: `${carbonara}`,
-    rating: 4.5,
-    prepTime: "30 mins",
-  },
-  {
-    id: 2,
-    title: "Chicken Curry",
-    description: "Spicy and flavorful curry for any occasion.",
-    image: `${chicken}`,
-    rating: 4.8,
-    prepTime: "45 mins",
-  },
-  {
-    id: 3,
-    title: "Avocado Toast",
-    description: "Healthy and quick breakfast option.",
-    image: `${avocado}`,
-    rating: 4.2,
-    prepTime: "15 mins",
-  },
-  {
-    id: 4,
-    title: "Avocado Toast",
-    description: "Healthy and quick breakfast option.",
-    image: `${avocado}`,
-    rating: 4.2,
-    prepTime: "15 mins",
-  },
-  {
-    id: 5,
-    title: "Avocado Toast",
-    description: "Healthy and quick breakfast option.",
-    image: `${avocado}`,
-    rating: 4.2,
-    prepTime: "15 mins",
-  },
-];
-
+import axios from "axios";
 function RecipeListingPage() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
+  const [recipes,setRecipes]=useState([]);
   const filteredRecipes = recipes
     .filter((recipe) =>
-      recipe.title.toLowerCase().includes(search.toLowerCase())
+      recipe.strMeal.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
       if (sort === "rating") return b.rating - a.rating;
@@ -85,7 +43,18 @@ function RecipeListingPage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
+  useEffect(()=>{
+      const fetchRecipe=async()=>{
+       try {
+        const response=await axios.get("https://www.themealdb.com/api/json/v1/1/filter.php?a=Indian");
+       const data=response.data;
+       setRecipes(data.meals);
+       } catch (error) {
+        console.log("Error in feching data "+error.message)
+       }
+      }
+    fetchRecipe();
+  },[])
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -268,7 +237,7 @@ function RecipeListingPage() {
 
         <Grid container spacing={4}>
           {displayedRecipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
+            <Grid item xs={12} sm={6} md={4} key={recipe.idMeal}>
               <RecipeCard {...recipe} />
             </Grid>
           ))}

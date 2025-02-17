@@ -11,6 +11,7 @@ import AboutUsPage from "./pages/AboutUs";
 import ProfilePage from "./pages/ProfilePage";
 import Layout from "./component/Layout";
 import React from 'react';
+import './index.css'
 function App() {
   return (
       <Routes>

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useRef } from "react";
+import { motion } from "framer-motion";
 import {
+  Tooltip,
   Box,
   Avatar,
   Typography,
@@ -20,26 +22,65 @@ import {
   ListItemText,
   Chip,
 } from "@mui/material";
+import EditProfileModal from "../component/EditProfileModal";
 import EditIcon from "@mui/icons-material/Edit";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import useAuthStore from "../store/userAuthStore";
+import axios from "axios";
+import { ToastContainer, toast,Slide } from 'react-toastify';
 const ProfilePage = () => {
   const [tabValue, setTabValue] = useState(0);
+  const [openModal, setOpenModal] = useState(true);
   const [dietaryPreferences, setDietaryPreferences] = useState([]);
   const [cuisinePreferences, setCuisinePreferences] = useState([]);
   const user=useAuthStore((state)=>state.user)
-  const [savedRecipes, setSavedRecipes] = useState([
-    { id: 1, title: "Spaghetti Carbonara", image: "https://via.placeholder.com/150" },
-    { id: 2, title: "Chicken Curry", image: "https://via.placeholder.com/150" },
-  ]);
-
+  const update=useAuthStore((state)=>state.update);
+  const [isEditing, setIsEditing] = useState(false);
+  const[savedRecipes,setSavedRecipes]=useState([]);
+  const signout=useAuthStore((state)=>state.signout);
+  useEffect(()=>{
+    if(!user)return
+    const fetchCustomMealdata=async()=>{
+      try {
+        const response=await axios.get(`http://localhost:5000/api/v1/getusercustommeal?userId=${user.id}`)
+        setSavedRecipes(response.data)
+      } catch (error) {
+        console.error("Error fetching meals:", error.message); 
+      }
+    }
+    fetchCustomMealdata();
+  },[user])
+      const notify = (user,msg) => {
+        if(!user)return
+        if(user){
+          toast(msg, { transition: Slide, autoClose: 1000,onClose:()=> setIsEditing(false) });
+        }
+      };
+  const handleEditClick = () => {
+    setIsEditing(!isEditing); 
+  };
+  const handleClose = () => {
+    setIsEditing(false); 
+  };
+  const handleSave = (updatedUser) => {
+    update(updatedUser); 
+    notify(user,"Profile updated Successfully!!");
+  };
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
-
+ const handleDelete=async(e)=>{
+   e.preventDefault();
+   try {
+    signout(user.id);
+    
+   } catch (error) {
+    console.log("There is some error "+error.message);
+   }
+ }
   return (
     <Box sx={{ px: 3, py: 4, maxWidth: 1200, mx: "auto" }}>
-      {/* User Info Section */}
+      <ToastContainer position="top-center"/> 
       <Box
         sx={{
           display: "flex",
@@ -50,11 +91,19 @@ const ProfilePage = () => {
         }}
       >
         <Box position="relative">
-          <Avatar
+        <motion.div
+        whileHover={{ rotateX: 10, rotateY: 10, scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 100, damping: 10 }}
+        style={{ display: "inline-block" }}
+      >
+        <Tooltip title={user?.email || "test@gmail.com"}>
+        <Avatar
             src="https://avataaars.io/?avatarStyle=Circle&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=CollarSweater&clotheColor=PastelRed&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
             alt="Profile Picture"
             sx={{ width: 120, height: 120 }}
           />
+        </Tooltip> 
+      </motion.div>
           <IconButton
             size="small"
             sx={{
@@ -74,7 +123,7 @@ const ProfilePage = () => {
             {user.username}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            {user.email}
+           {user.email || "Test@gmail.com"}
           </Typography>
           <Typography variant="body2" color="textSecondary" mt={1}>
             Bio: Passionate about exploring cuisines and sharing recipes.
@@ -85,6 +134,7 @@ const ProfilePage = () => {
         <Button
           startIcon={<EditIcon />}
           variant="outlined"
+          onClick={() => handleEditClick()}
           sx={{ alignSelf: "flex-start" }}
         >
           Edit Profile
@@ -165,11 +215,11 @@ const ProfilePage = () => {
                   >
                     <img
                       src={recipe.image}
-                      alt={recipe.title}
+                      alt={recipe.category}
                       style={{ width: "100%", height: 150, objectFit: "cover" }}
                     />
                     <Typography variant="body1" p={2}>
-                      {recipe.title}
+                      {recipe.recipe_name}
                     </Typography>
                   </Box>
                 </Grid>
@@ -221,13 +271,14 @@ const ProfilePage = () => {
             <Typography variant="h6" fontWeight="bold" mb={2}>
               Account Settings
             </Typography>
-            <TextField fullWidth label="Email" value="johndoe@example.com" disabled sx={{ mb: 2 }} />
-            <Button variant="contained" color="error">
+            <TextField fullWidth label="Email" value={user?.email || "test@gmail.com"} disabled sx={{ mb: 2 }} />
+            <Button variant="contained" color="error" onClick={(e)=>handleDelete(e)}>
               Delete Account
             </Button>
           </Box>
         )}
       </Box>
+      {isEditing && <EditProfileModal onClose={handleClose} user={user} onSave={handleSave} />}
     </Box>
   );
 };

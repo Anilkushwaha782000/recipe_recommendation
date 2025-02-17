@@ -50,4 +50,42 @@ router.post("/logout",async (req,res)=>{
     
   }
 })
+router.post("/deleteaccount",async (req,res)=>{
+  try {
+    const { userId } = req.body;
+    const user = await User.findByIdAndDelete(userId);
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+    return res.status(200).json({ message: `${user.email} signout out successfully` });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+    
+  }
+})
+router.put("/updateuser",async (req,res)=>{
+  try {
+    const { userId,email,username } = req.body;
+    const user = await User.findById(userId);
+    if(!user){
+      return res.status(404).json({message:"User not found"});
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username, email },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    return res.status(200).json({ success: true, message: "User updated successfully", user: {
+      username: updatedUser.username,
+      email: updatedUser.email,
+      id:updatedUser._id
+    }, });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+    
+  }
+})
 export default router;
