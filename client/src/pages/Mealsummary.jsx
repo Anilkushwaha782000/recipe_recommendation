@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import useAuthStore from "../store/userAuthStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast, Slide } from 'react-toastify';
 function MealSummary({ mealPlan }) {
   const [mealtype, setMealType] = useState("");
   const [day, setDay] = useState("");
@@ -34,12 +35,34 @@ function MealSummary({ mealPlan }) {
   const handleCheckboxChange = (id) => {
     setSelectedMeal(selectedMeal === id ? null : id);
   };
+  const notify = (user, msg,callback) => {
+      if (!user) return
+      if (user) {
+        toast(msg, { transition: Slide, autoClose: 1000, onClose: callback ? () => callback() : undefined });
+      }
+    };
   const handleClose=()=>{
     setIsediting(false);
   }
-  const handleDelete = (id) => {
+  const handleDelete = async(id) => {
     console.log(`Delete meal with ID: ${id}`);
-    setIsDeleting(!isDeleting)
+    try {
+      const response=await axios.post(`http://localhost:5000/api/v1/deletemeal/${id}`,{userId:user.id},{
+        headers:{
+          'Content-Type': 'application/json',
+        },
+        withCredentials:true
+      })
+      console.log(response.data);
+      if(response.statusText=="OK"){
+        setMealData(mealData.filter((meal) => meal._id !== id));
+        notify(user, "Meal deleted Successfully!!",() => {
+          setIsDeleting(!isDeleting)
+        });
+      } 
+    } catch (error) {
+      console.log("Some error while deleting  meal "+error.message)
+    }
   };
 
   const handleEdit = (id) => {
@@ -68,6 +91,7 @@ function MealSummary({ mealPlan }) {
   );
   return (
     <Container maxWidth="" sx={{ mt: 3, pb: 5 }}>
+       <ToastContainer position="top-center" />
       <Typography variant={"h4"} sx={{alignItems:"center",justifyContent:"center",display:"flex"}}>Your weekly Summary</Typography>
       <Box sx={{ p: 3 }}>
         {isEditing&&(

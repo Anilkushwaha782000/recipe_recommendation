@@ -11,21 +11,22 @@ import AboutUsPage from "./pages/AboutUs";
 import ProfilePage from "./pages/ProfilePage";
 import Layout from "./component/Layout";
 import React from 'react';
-import './index.css'
+import ProtectedRoute from "./component/ProtectedRoute";
+import PublicRoute from "./component/PublicRoute";
 function App() {
   return (
       <Routes>
         <Route path="/" element={<Layout />}>
         <Route index  element={<HomePage />} />
-        <Route path="/customrecipe" element={<CustomRecipeCreation />} />
+        <Route path="/customrecipe" element={<ProtectedRoute><CustomRecipeCreation/></ProtectedRoute>} />
         <Route path="/recipes" element={<RecipeListingPage />} />
         <Route path="/recipe/:id" element={<RecipeCard />} />
-        <Route path="/login" element={<AuthPage />} />
-        <Route path="/planner" element={<DietaryPlanner />} />
+        <Route path="/login" element={<PublicRoute><AuthPage/></PublicRoute>} />
+        <Route path="/planner" element={<ProtectedRoute><DietaryPlanner/></ProtectedRoute>} />
         <Route path="/mealsummary" element={<MealSummary />} />
-        <Route path="/addmeal" element={<AddMealForm />} />
+        <Route path="/addmeal" element={<ProtectedRoute><AddMealForm/></ProtectedRoute>}/>
         <Route path="/about" element={<AboutUsPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
         </Route>
       </Routes>
   );
