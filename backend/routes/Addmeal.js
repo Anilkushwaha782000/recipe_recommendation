@@ -71,5 +71,20 @@ router.post("/customrecipe",async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 })
+router.post("/deletecustomrecipe/:id",async(req,res)=>{
+    try {
+        const{userId}=req.body;
+        const { id } = req.params; 
+        const existUser=await User.findById(userId);
+        if(!existUser) return res.status(404).json({message:"User not found"});
+        const result = await customrecipe.findByIdAndDelete(id);
+        if (!result) {
+         return res.status(404).json({ message: 'Recipe not found' });
+        }
+        return res.status(200).json({message:"Recipe deleted successfully"});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+})
 export default router;
 

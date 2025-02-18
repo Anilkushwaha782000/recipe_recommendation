@@ -192,8 +192,8 @@ function Navbar() {
         <MenuItem onClick={()=>handleClose('profile')}>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem onClick={()=>handleClose('myaccount')}>
-          <Avatar /> My account
+        <MenuItem component={Link} to={"/mealsummary"}>
+          <Avatar /> My saved meal
         </MenuItem>
         <Divider />
         <MenuItem onClick={()=>handleClose('addaccount')}>
