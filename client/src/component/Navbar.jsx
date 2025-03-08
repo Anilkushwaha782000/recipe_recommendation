@@ -31,6 +31,8 @@ function Navbar() {
   };
   const handleClose = (link) => {
     setAnchorEl(null);
+    if(drawerOpen==true) 
+      setDrawerOpen(!drawerOpen);
     if(link=='profile'){
       navigate('/profile')
     }
@@ -39,6 +41,9 @@ function Navbar() {
     }
     else if(link=='addaccount'){
       navigate('/addaccount')
+    }
+    else if(link=='mealsummary'){
+      navigate('/mealsummary')
     }
     else if(link=='account'){
       navigate('/account');
@@ -190,7 +195,7 @@ function Navbar() {
         <MenuItem onClick={()=>handleClose('profile')}>
           <Avatar /> Profile
         </MenuItem>
-        <MenuItem component={Link} to={"/mealsummary"}>
+        <MenuItem  onClick={()=>handleClose('mealsummary')}>
           <Avatar /> My saved meal
         </MenuItem>
         <Divider />
@@ -230,6 +235,7 @@ function Navbar() {
         >
           {navItems.map((item) => (
             <Button
+            onClick={()=>setDrawerOpen(!drawerOpen)}
               key={item}
               component={Link}
               to={`/${item}`}
@@ -244,20 +250,24 @@ function Navbar() {
             </Button>
           ))}
           {user ? (
-              <Button
-                sx={{
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  color: 'blue',
-                  '&:hover': { color: 'secondary.main', background: 'transparent' },
-                }}
-              >
-                {user.username} {/* Display username if logged in */}
-              </Button>
+                      <Tooltip title={user.email}>
+                      <IconButton
+                        onClick={(e)=>{handleClick(e)}}
+                        size="small"
+                        sx={{ ml: 2,color:"#6d3f66" }}
+                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                      >
+                        <Avatar sx={{ width: 32, height: 32,bgcolor:"#9c27b0" }}>{user.username.split(" ").map(name => name[0]).join("").toUpperCase()}</Avatar>
+                      </IconButton>
+                    </Tooltip>
+             
             ) : (
               <Button
                 to="/login"
                 component={Link}
+                onClick={()=>setDrawerOpen(!drawerOpen)}
                 sx={{
                   fontSize: '1rem',
                   fontWeight: '600',

@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import Navbar from './Navbar';
 import { motion } from "framer-motion";
+import { Link } from 'react-router-dom';
 const HomePage = () => {
   const mealData = [{
     title: 'AI-Powered Suggestions',
@@ -81,8 +82,8 @@ const HomePage = () => {
           </MotionTypography>
           <MotionButton
             variant="contained"
-            component="a"
-            href="/recipes"
+            component={Link}
+            to="/recipes"
             sx={{
               mt: 3,
               backgroundColor: "#ff3366",
