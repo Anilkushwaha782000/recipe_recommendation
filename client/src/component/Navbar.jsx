@@ -50,7 +50,6 @@ function Navbar() {
     try {
       logout();
      const response= await axios.post("http://localhost:5000/api/auth/logout")
-     console.log("logout>>",response.data);
     } catch (error) {
       console.log("logout error>>",error.message);
     }

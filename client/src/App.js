@@ -12,7 +12,7 @@ import ProfilePage from "./pages/ProfilePage";
 import Layout from "./component/Layout";
 import React from 'react';
 import ProtectedRoute from "./component/ProtectedRoute";
-import PublicRoute from "./component/PublicRoute";
+import RecipeCategory from "./pages/RecipeCategory";
 function App() {
   return (
       <Routes>
@@ -21,11 +21,12 @@ function App() {
         <Route path="/customrecipe" element={<ProtectedRoute><CustomRecipeCreation/></ProtectedRoute>} />
         <Route path="/recipes" element={<RecipeListingPage />} />
         <Route path="/recipe/:id" element={<RecipeCard />} />
-        <Route path="/login" element={<PublicRoute><AuthPage/></PublicRoute>} />
+        <Route path="/login" element={<AuthPage/>} />
         <Route path="/planner" element={<ProtectedRoute><DietaryPlanner/></ProtectedRoute>} />
         <Route path="/mealsummary" element={<MealSummary />} />
         <Route path="/addmeal" element={<ProtectedRoute><AddMealForm/></ProtectedRoute>}/>
         <Route path="/about" element={<AboutUsPage />} />
+        <Route path="/meal" element={<RecipeCategory/>}/>
         <Route path="/profile" element={<ProtectedRoute><ProfilePage/></ProtectedRoute>} />
         </Route>
       </Routes>

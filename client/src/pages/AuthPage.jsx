@@ -28,7 +28,7 @@ function AuthPage() {
   const notify = (user,msg) => {
     if(!user)return
     if(user){
-      toast(msg, { transition: Slide, autoClose: 1000,onClose: () => navigate("/recipes"), });
+      toast.success(msg, { transition: Slide, autoClose: 1000,onClose: () => navigate("/recipes"), });
     }
   };
   const handleSubmit = async (event) => {

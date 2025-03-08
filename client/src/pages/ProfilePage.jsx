@@ -21,6 +21,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Chip,
+  Skeleton
 } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditProfileModal from "../component/EditProfileModal";
@@ -113,13 +114,17 @@ const ProfilePage = () => {
             transition={{ type: "spring", stiffness: 100, damping: 10 }}
             style={{ display: "inline-block" }}
           >
-            <Tooltip title={user?.email || "test@gmail.com"}>
-              <Avatar
-                src="https://avataaars.io/?avatarStyle=Circle&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=CollarSweater&clotheColor=PastelRed&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
-                alt="Profile Picture"
-                sx={{ width: 120, height: 120 }}
-              />
-            </Tooltip>
+            {user?(
+               <Tooltip title={user?.email || "test@gmail.com"}>
+               <Avatar
+                 src="https://avataaars.io/?avatarStyle=Circle&topType=Hat&accessoriesType=Blank&facialHairType=Blank&clotheType=CollarSweater&clotheColor=PastelRed&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+                 alt="Profile Picture"
+                 sx={{ width: 120, height: 120 }}
+               />
+             </Tooltip>
+            ):(
+              <Skeleton variant="circular" width={210} height={118} />
+            )}
           </motion.div>
           <IconButton
             size="small"

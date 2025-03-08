@@ -18,10 +18,12 @@ import {
   Button,
   Card,
   CardContent,
+  Skeleton
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import RecipeCard from "./RecipeCard";
 import axios from "axios";
+import { Link } from "react-router-dom";
 function RecipeListingPage() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("");
@@ -138,24 +140,24 @@ function RecipeListingPage() {
         >
           Recipe Categories
         </Typography>
-        {/* Perspective added to Grid container */}
         <Grid 
           container 
           spacing={4} 
           mt={4} 
-          sx={{ perspective: "1000px" }} // Perspective effect
+          sx={{ perspective: "1000px" }}
         >
-          {["Breakfast", "Lunch", "Dinner", "Desserts", "Snacks"].map((category, index) => (
+          {["Vegetarian", "Non-Vegetarian", "Vegetables", "Desserts", "Snacks","Fruits","Condiments"].map((category, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card
+              <Link to={`/meal?category=${category}`} style={{ textDecoration: "none" }}>
+              <Card 
                 sx={{
                   boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                   borderRadius: "8px",
                   backgroundColor: "#fff",
-                  transformStyle: "preserve-3d", // Ensures proper 3D effect
+                  transformStyle: "preserve-3d",
                   transition: "transform 0.5s ease",
                   "&:hover": {
-                    transform: "rotateY(15deg) scale(1.05)", // Rotate and scale on hover
+                    transform: "rotateY(15deg) scale(1.05)",
                     boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
                   },
                 }}
@@ -179,6 +181,7 @@ function RecipeListingPage() {
                   </Typography>
                 </CardContent>
               </Card>
+              </Link>
             </Grid>
           ))}
         </Grid>

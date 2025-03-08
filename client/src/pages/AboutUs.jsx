@@ -1,5 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion } from "framer-motion";
+import { ToastContainer, toast,Slide } from 'react-toastify';
+import useAuthStore from "../store/userAuthStore";
 import {
   Box,
   Container,
@@ -14,9 +16,45 @@ import {
 import Aboutbanner from '../resources/images/Aboutbanner.png';
 
 const AboutUsPage = () => {
+  const user=useAuthStore((state)=>state.user);
+  const [formData,setFormData]=useState({
+    name:'',
+    email:'',
+    message:''
+  })
+    const notify = (user,msg) => {
+      if(!user)return
+      if(user){
+        toast(msg, { transition: Slide, autoClose: 1000});
+      }
+    };
+  const handleOnchange=(e)=>{
+  const{name,value}=e.target;
+  setFormData((prevdata)=>({
+    ...prevdata,
+    [name]:value
+  }))
+  }
+  const handleSubmit=async(e)=>{
+  e.preventDefault();
+  const formDataToSend = new FormData();
+  for (const key in formData) {
+    formDataToSend.append(key, formData[key]);
+  }
+  formDataToSend.append("subject", `You recieved message by ${formData.name} from recipe website`);
+  formDataToSend.append("access_key", "9ca6f783-b768-4318-9797-2948729e7ec7");
+  const res = await fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formDataToSend
+  })
+  const resData = await res.json()
+  if (resData.success) {
+    notify(user,`Thanks ${formData.name} Love to connect with you to create something big together`);
+    console.log("Success", res);
+  }
+  }
   return (
     <>
-      {/* Hero Banner */}
       <Box
   sx={{
     height: "60vh",
@@ -42,6 +80,7 @@ const AboutUsPage = () => {
     },
   }}
 >
+<ToastContainer position="top-center"/>
 <motion.div
       initial={{ opacity: 0, y: 30 }} 
       animate={{ opacity: 1, y: 0 }} 
@@ -60,9 +99,6 @@ const AboutUsPage = () => {
   </Typography>
   </motion.div>
 </Box>
-
-
-      {/* About Section */}
       <Container maxWidth="lg" sx={{ my: 6}}>
         <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} md={6}>
@@ -210,19 +246,28 @@ const AboutUsPage = () => {
                 <TextField
                   fullWidth
                   label="Your Name"
+                  name="name"
                   variant="outlined"
+                  value={formData.name}
+                  onChange={handleOnchange}
                   sx={{ mb: 2 }}
                 />
                 <TextField
                   fullWidth
                   label="Your Email"
                   variant="outlined"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleOnchange}
                   sx={{ mb: 2 }}
                 />
                 <TextField
                   fullWidth
                   label="Message"
                   variant="outlined"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleOnchange}
                   multiline
                   rows={4}
                   sx={{ mb: 2 }}
@@ -232,6 +277,7 @@ const AboutUsPage = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
+                  onClick={handleSubmit}
                   sx={{
                     borderRadius: "50px",
                     textTransform: "none",

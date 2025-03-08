@@ -26,7 +26,7 @@ router.post("/addmeal", async (req, res) => {
 router.get("/getusermeal",async (req,res)=>{
     try {
         const {userId}=req.query
-        if(!userId) return req.status(404).json({message:"User Id is required"})
+        if(!userId) return res.status(404).json({message:"User Id is required"})
         const meals = await addmeal.find({ userRef:userId });
         return res.json(meals);
 
@@ -37,7 +37,7 @@ router.get("/getusermeal",async (req,res)=>{
 router.get("/getusercustommeal",async (req,res)=>{
     try {
         const {userId}=req.query
-        if(!userId) return req.status(404).json({message:"User Id is required"})
+        if(!userId) return res.status(404).json({message:"User Id is required"})
         const custommeals = await customrecipe.find({ userRef:userId });
         return res.json(custommeals);
 
@@ -107,6 +107,21 @@ router.post("/deletemeal/:id",async(req,res)=>{
         return res.status(200).json({message:"Recipe deleted successfully"});
     } catch (error) {
         res.status(500).json({message:error.message});
+    }
+})
+router.get("/getcategorizedmeal",async (req,res)=>{
+    try {
+        const {category,userId}=req.query
+        if(!userId) return res.status(404).json({message:"User Id is required"})
+        const URL=`https://forkify-api.herokuapp.com/api/search?q=${category}`
+        const fetchedmealdata= await fetch(URL)
+        if (!fetchedmealdata.ok) {
+            return res.status(fetchedmealdata.status).json({ message: 'Failed to fetch data from the API' });
+        }
+        const data = await fetchedmealdata.json();
+        return res.json(data);
+    } catch (error) {
+        return res.status(500).json({ error: error.message});
     }
 })
 export default router;
