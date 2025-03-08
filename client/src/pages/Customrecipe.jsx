@@ -62,6 +62,17 @@ const CustomRecipeCreation = () => {
     try {
       addcustomMeal(updatedMeal);
       notify(user,"Custom recipe saved Successfully!!");
+      setRecipe({
+        recipe_name: '',
+        ingredients: '',
+        instructions: '',
+        calories: '',
+        protein: '',
+        carbs: '',
+        fat: '',
+        category: '',
+        image: null,
+      })
     } catch (error) {
       console.log('There is some error while saving the data:', error.message);
     }
