@@ -67,9 +67,8 @@ function Navbar() {
       <Container>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           {/* Logo */}
-          <Button
+          <Link
             to="/"
-            component={Link}
             sx={{
               fontSize: '1.5rem',
               fontWeight: 'bold',
@@ -91,7 +90,7 @@ function Navbar() {
                 🍽️
               </Typography>
             </motion.div>
-          </Button>
+          </Link>
 
           {/* Hamburger Menu for Small Screens */}
           <Box sx={{ display: { xs: 'block', md: 'none' } }}>
@@ -229,10 +228,11 @@ function Navbar() {
             backgroundColor: 'background.paper',
           }}
         >
-          {['recipes', 'planner', 'custom-recipe', 'about'].map((item) => (
+          {navItems.map((item) => (
             <Button
               key={item}
-              href={`/${item}`}
+              component={Link}
+              to={`/${item}`}
               sx={{
                 fontSize: '1rem',
                 fontWeight: '600',
@@ -256,7 +256,8 @@ function Navbar() {
               </Button>
             ) : (
               <Button
-                href="/login"
+                to="/login"
+                component={Link}
                 sx={{
                   fontSize: '1rem',
                   fontWeight: '600',
