@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import axios from "axios";
+import config from "../config";
 const useRecipeStore = create((set,get) => ({
     savedRecipes: [],
     savedGoal:[],
     customRecipe:[],
     addRecipe: async (updatedMeal) => {
         try {
-            const responsedata=await axios.post("http://localhost:5000/api/v1/addmeal",updatedMeal,{
+            const responsedata=await axios.post(`${config.backend_URL}/api/v1/addmeal`,updatedMeal,{
                 withCredentials:true,
                 headers:{
                   'Content-Type': 'application/json',
@@ -20,7 +21,7 @@ const useRecipeStore = create((set,get) => ({
       },
       addGoal: async (goalData) => {
         try {
-            const responsedata=await axios.post("http://localhost:5000/api/v1/savegoal",goalData,{
+            const responsedata=await axios.post(`${config.backend_URL}/api/v1/savegoal`,goalData,{
                 withCredentials:true,
                 headers:{
                   'Content-Type': 'application/json',
@@ -34,7 +35,7 @@ const useRecipeStore = create((set,get) => ({
       },
       addCustommeal: async (custommealdata) => {
         try {
-            const responsedata=await axios.post("http://localhost:5000/api/v1/customrecipe",custommealdata,{
+            const responsedata=await axios.post(`${config.backend_URL}/api/v1/customrecipe`,custommealdata,{
                 withCredentials:true,
                 headers:{
                   'Content-Type': 'application/json',

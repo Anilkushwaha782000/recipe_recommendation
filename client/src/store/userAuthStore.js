@@ -1,6 +1,6 @@
 import axios from "axios";
 import { create } from "zustand";
-
+import config from "../config";
 const useAuthStore = create((set) => ({
   user: null,
   token: null,
@@ -10,7 +10,7 @@ const useAuthStore = create((set) => ({
   logout: () => set({ user: null, token: null }) ,
   signout:async (id)=>{
    try {
-    const response=await axios.post('http://localhost:5000/api/auth/deleteaccount',{userId:id})
+    const response=await axios.post(`${config.backend_URL}/api/auth/deleteaccount`,{userId:id})
     set({ user: null, token: null })
    } catch (error) {
     
@@ -18,7 +18,7 @@ const useAuthStore = create((set) => ({
   },
   update:async(updateuserdata)=>{
     try {
-      const response=await axios.put('http://localhost:5000/api/auth/updateuser',{userId:updateuserdata.id,...updateuserdata})
+      const response=await axios.put(`${config.backend_URL}/api/auth/updateuser`,{userId:updateuserdata.id,...updateuserdata})
       if (response.data.success) {  
         set({ user: response.data.user });
       }

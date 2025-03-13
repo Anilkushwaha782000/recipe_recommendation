@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import userAuthStore from "../store/userAuthStore";
+import config from "../config";
 import { ToastContainer, toast,Slide } from 'react-toastify';
 function AuthPage() {
   const navigate=useNavigate();
@@ -35,7 +36,7 @@ function AuthPage() {
     event.preventDefault();
     if (activeTab === 0){
       try {
-        const responsedata=await axios.post("http://localhost:5000/api/auth/login",{
+        const responsedata=await axios.post(`${config.backend_URL}/api/auth/login`,{
           password,email
         },{withCredentials: true,
           headers:{
@@ -53,7 +54,7 @@ function AuthPage() {
     }
     else {
       try {
-        const response=await axios.post("http://localhost:5000/api/auth/signup",{
+        const response=await axios.post(`${config.backend_URL}/api/auth/signup`,{
           username,password,email
         },{withCredentials: true,
           headers:{

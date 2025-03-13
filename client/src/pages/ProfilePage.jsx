@@ -29,6 +29,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
 import useAuthStore from "../store/userAuthStore";
 import axios from "axios";
+import config from "../config";
 import { ToastContainer, toast, Slide } from 'react-toastify';
 const ProfilePage = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -44,7 +45,7 @@ const ProfilePage = () => {
     if (!user) return
     const fetchCustomMealdata = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/getusercustommeal?userId=${user.id}`)
+        const response = await axios.get(`${config.backend_URL}/api/v1/getusercustommeal?userId=${user.id}`)
         setSavedRecipes(response.data)
       } catch (error) {
         console.error("Error fetching meals:", error.message);
@@ -83,7 +84,7 @@ const ProfilePage = () => {
   }
   const onDelete=async(id)=>{
   try {
-    const response=await axios.post(`http://localhost:5000/api/v1/deletecustomrecipe/${id}`,{userId:user.id},{withCredentials: true,
+    const response=await axios.post(`${config.backend_URL}/api/v1/deletecustomrecipe/${id}`,{userId:user.id},{withCredentials: true,
       headers:{
         'Content-Type': 'application/json',
       }

@@ -7,6 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
+import config from '../config';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
 import Settings from '@mui/icons-material/Settings';
@@ -70,7 +71,7 @@ function Navbar() {
   const handleLogout=async()=>{
     try {
       logout();
-     const response= await axios.post("http://localhost:5000/api/auth/logout")
+     const response= await axios.post(`${config.backend_URL}/api/auth/logout`)
     } catch (error) {
       console.log("logout error>>",error.message);
     }

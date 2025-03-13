@@ -22,6 +22,7 @@ import { motion } from "framer-motion";
 import useAuthStore from "../store/userAuthStore";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import config from "../config";
 import { ToastContainer, toast, Slide } from 'react-toastify';
 function MealSummary({ mealPlan }) {
   const [mealtype, setMealType] = useState("");
@@ -47,7 +48,7 @@ function MealSummary({ mealPlan }) {
   const handleDelete = async(id) => {
     console.log(`Delete meal with ID: ${id}`);
     try {
-      const response=await axios.post(`http://localhost:5000/api/v1/deletemeal/${id}`,{userId:user.id},{
+      const response=await axios.post(`${config.backend_URL}/api/v1/deletemeal/${id}`,{userId:user.id},{
         headers:{
           'Content-Type': 'application/json',
         },
@@ -75,7 +76,7 @@ function MealSummary({ mealPlan }) {
     if(!user)return
     const fetchMealdata=async()=>{
       try {
-        const response=await axios.get(`http://localhost:5000/api/v1/getusermeal?userId=${user.id}`)
+        const response=await axios.get(`${config.backend_URL}/api/v1/getusermeal?userId=${user.id}`)
         setMealData(response.data)
         console.log("response.data  mealsummary",response.data)
       } catch (error) {

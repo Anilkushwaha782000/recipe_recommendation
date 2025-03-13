@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import useAuthStore from '../store/userAuthStore';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import config from '../config';
 import { Grid, Card, CardContent, Typography, CardMedia, Box, CircularProgress, Skeleton, CardActions, IconButton } from "@mui/material";
 function RecipeCategory() {
     const [searchParams] = useSearchParams();
@@ -26,7 +27,7 @@ function RecipeCategory() {
     useEffect(() => {
         const meallisting = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/v1/getcategorizedmeal?category=${mealname}&userId=${user.id}`)
+                const response = await axios.get(`${config.backend_URL}/api/v1/getcategorizedmeal?category=${mealname}&userId=${user.id}`)
                 if (response.statusText == "OK") {
                     setMeal(response.data.recipes);
                     setLoading(false);
