@@ -28,7 +28,7 @@ function RecipeCategory() {
         const meallisting = async () => {
             try {
                 const response = await axios.get(`${config.backend_URL}/api/v1/getcategorizedmeal?category=${mealname}&userId=${user.id}`)
-                if (response.statusText == "OK") {
+                if (response.status == 200) {
                     setMeal(response.data.recipes);
                     setLoading(false);
                 }
