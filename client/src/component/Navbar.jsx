@@ -8,6 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
+import FastfoodIcon from '@mui/icons-material/Fastfood';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import { motion } from 'framer-motion';
@@ -25,7 +26,22 @@ function Navbar() {
   };
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const navItems=['recipes', 'planner', 'customrecipe', 'about']
+  const navItems = [{
+    label: 'Recipes',
+    path:'/recipes'
+  },
+  {
+    label: 'Meal Planner',
+    path:'/planner'
+  },
+  {
+    label: 'Create Recipe',
+    path:'/customrecipe'
+  },
+  {
+    label: 'About Us',
+    path:'/about'
+  }];
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -111,11 +127,11 @@ function Navbar() {
               gap: 3,
             }}
           >
-            {navItems.map((item) => (
+            {navItems.map(({label,path}) => (
               <Button
                component={Link}
-                key={item}
-                to={`/${item}`}
+                key={path}
+                to={`${path}`}
                 sx={{
                   fontSize: '1rem',
                   fontWeight: '600',
@@ -123,7 +139,7 @@ function Navbar() {
                   '&:hover': { color: 'secondary.main', background: 'transparent' },
                 }}
               >
-                {item}
+                {label}
               </Button>
             ))}
             {user ? (
@@ -196,21 +212,9 @@ function Navbar() {
           <Avatar /> Profile
         </MenuItem>
         <MenuItem  onClick={()=>handleClose('mealsummary')}>
-          <Avatar /> My saved meal
+        <FastfoodIcon color="disabled" /> saved meal
         </MenuItem>
         <Divider />
-        <MenuItem onClick={()=>handleClose('addaccount')}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
-        <MenuItem onClick={()=>handleClose('settting')}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
         <MenuItem onClick={()=>handleLogout()}>
           <ListItemIcon>
             <Logout fontSize="small" />
@@ -233,12 +237,12 @@ function Navbar() {
             backgroundColor: 'background.paper',
           }}
         >
-          {navItems.map((item) => (
+          {navItems.map(({label,path}) => (
             <Button
             onClick={()=>setDrawerOpen(!drawerOpen)}
-              key={item}
+              key={path}
               component={Link}
-              to={`/${item}`}
+              to={`${path}`}
               sx={{
                 fontSize: '1rem',
                 fontWeight: '600',
@@ -246,7 +250,7 @@ function Navbar() {
                 '&:hover': { color: 'secondary.main', background: 'transparent' },
               }}
             >
-              {item}
+              {label}
             </Button>
           ))}
           {user ? (

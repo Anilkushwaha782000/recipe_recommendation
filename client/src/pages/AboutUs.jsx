@@ -143,7 +143,7 @@ const AboutUsPage = () => {
             Why Choose Us
           </Typography>
           <Grid container spacing={4}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} sx={{ mb: 4 }}>
               <Paper
                 elevation={6}
                 sx={{
@@ -170,7 +170,7 @@ const AboutUsPage = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} sx={{ mb: 4 }}>
               <Paper
                 elevation={6}
                 sx={{
@@ -196,7 +196,7 @@ const AboutUsPage = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} sx={{ mb: 4 }}>
               <Paper
                 elevation={6}
                 sx={{
