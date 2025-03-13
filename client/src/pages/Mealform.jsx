@@ -48,6 +48,12 @@ function AddMealForm() {
     try {
       addRecipe(updatedMeal);
       notify(user,"Meal recipe saved successfully!!");
+      setMeal({
+        day: selectedDay,
+        mealtype: "",
+        mealname: "",
+        calories: "",
+      })
     } catch (error) {
       console.log("There is some error at client side:", error.message);
     }

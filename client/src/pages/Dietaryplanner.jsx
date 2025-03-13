@@ -51,6 +51,8 @@ function DietaryPlanner() {
       await addGoal(updatedgoal)
       setGoalSaved(true);
       notify(user,"Goal has been saved Succesfully!!");
+      setDailycalories('');
+      setProtine('');
     } catch (error) {
       console.log("There is some error at client side:", error.message);
       setGoalSaved(false);
