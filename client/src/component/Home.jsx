@@ -160,8 +160,8 @@ const HomePage = () => {
         <Button
           variant="contained"
           sx={{ mt: 3, backgroundColor: '#ff3366', padding: '12px 24px', fontSize: '16px', borderRadius: '25px', boxShadow: '0px 4px 12px rgba(255, 51, 102, 0.4)', '&:hover': { backgroundColor: '#cc0052' } }}
-          component="a"
-          href="/login"
+          component={Link}
+          to="/login"
         >
           Join Now
         </Button>
