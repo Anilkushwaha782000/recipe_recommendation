@@ -27,7 +27,7 @@ function RecipeCategory() {
     useEffect(() => {
         const meallisting = async () => {
             try {
-                const response = await axios.get(`${config.backend_URL}/api/v1/getcategorizedmeal?category=${mealname}&userId=${user.id}`)
+               const response = await axios.get(`https://forkify-api.herokuapp.com/api/search?q=${mealname}`)
                 if (response.status == 200) {
                     setMeal(response.data.recipes);
                     setLoading(false);
