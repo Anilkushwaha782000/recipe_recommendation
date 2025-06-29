@@ -109,20 +109,20 @@ router.post("/deletemeal/:id",async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 })
-router.get("/getcategorizedmeal",async (req,res)=>{
-    try {
-        const {category,userId}=req.query
-        if(!userId) return res.status(404).json({message:"User Id is required"})
-        const URL=`https://forkify-api.herokuapp.com/api/search?q=${category}`
-        const fetchedmealdata= await fetch(URL)
-        if (!fetchedmealdata.ok) {
-            return res.status(fetchedmealdata.status).json({ message: 'Failed to fetch data from the API' });
-        }
-        const data = await fetchedmealdata.json();
-        return res.json(data);
-    } catch (error) {
-        return res.status(500).json({ error: error.message});
-    }
-})
+// router.get("/getcategorizedmeal",async (req,res)=>{
+//     try {
+//         const {category,userId}=req.query
+//         if(!userId) return res.status(404).json({message:"User Id is required"})
+//         const URL=`https://forkify-api.herokuapp.com/api/search?q=${category}`
+//         const fetchedmealdata= await fetch(URL)
+//         if (!fetchedmealdata.ok) {
+//             return res.status(fetchedmealdata.status).json({ message: 'Failed to fetch data from the API' });
+//         }
+//         const data = await fetchedmealdata.json();
+//         return res.json(data);
+//     } catch (error) {
+//         return res.status(500).json({ error: error.message});
+//     }
+// })
 export default router;
 
